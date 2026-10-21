@@ -1,40 +1,30 @@
 #include "../Includes/cube.h"
 
-
-// void	my_put_pixel(int x, int y, int color, t_cube *game)
-// {
-// 	if (x >= WIDTH || y >= HEIGHT || x < 0 || y < 0)
-// 		return ;
-// 	int index = y * game->size_line + x * game->bpp / 8;
-// 	game->data[index] = color & 0xFF;
-// 	game->data[index + 1] = (color >> 8) & 0xFF;
-// 	game->data[index + 2] = (color >> 16) & 0xFF;
-// }
-
-void	draw_square(int x, int y,int size, int color, t_cube *game)
+void	draw_square(int x, int y,int size, uint32_t color, t_cube *game)
 {
-	while (x < x + size)
+	int i = 0;
+	int j = 0;
+
+	while (i < size)
 	{
-		// my_put_pixel(x, y, color, game);
-		mlx_pixel_put(game->mlx, game->window, x, y, (mlx_color){color});
-		x++;
+		mlx_pixel_put(game->mlx, game->window, x + i, y, (mlx_color){.rgba = color});
+		i++;
 	}
-	while (y < y + size)
+	while (j < size)
 	{
-		// my_put_pixel(x, y, color, game);
-		mlx_pixel_put(game->mlx, game->window, x, y, (mlx_color){color});
-		y++;
+		mlx_pixel_put(game->mlx, game->window, x, y + j, (mlx_color){.rgba = color});
+		j++;
 	}
-	while (x > x - size)
+	i = 0;
+	while (i <= size)
 	{
-		// my_put_pixel(x, y, color, game);
-		mlx_pixel_put(game->mlx, game->window, x, y, (mlx_color){color});
-		x--;
+		mlx_pixel_put(game->mlx, game->window, x + size, y + i, (mlx_color){.rgba = color});
+		i++;
 	}
-	while (y > y - size)
+	j = 0;
+	while (j <= size)
 	{
-		// my_put_pixel(x, y, color, game);
-		mlx_pixel_put(game->mlx, game->window, x, y, (mlx_color){color});
-		y--;
+		mlx_pixel_put(game->mlx, game->window, x + j, y + size, (mlx_color){.rgba = color});
+		j++;
 	}
 }
