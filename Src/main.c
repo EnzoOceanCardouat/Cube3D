@@ -21,9 +21,9 @@ char **init_map(void)
 	map = malloc(10 * sizeof(char *));
 	map[0] = "1111111111111111";
 	map[1] = "1000000000000001";
-	map[2] = "1001110000000001";
-	map[3] = "1000010000000001";
-	map[4] = "1001110000000001";
+	map[2] = "1001110000010001";
+	map[3] = "1000010011000101";
+	map[4] = "1001110000010001";
 	map[5] = "1000000000111111";
 	map[6] = "1000000000000001";
 	map[7] = "1000000000000001";
@@ -43,14 +43,14 @@ void	draw_map(t_cube *game)
 		{
 			if (game->map[i][j] == '1')
 			{
-				draw_square(map_x, map_y, 79, 0x00FFFFFF, game);
-				map_x += 79;
+				draw_square(map_x, map_y, BLOCK, 0x00FFFFFF, game);
+				map_x += BLOCK;
 			}
 			else
-				map_x += 79;
+				map_x += BLOCK;
 		}
 		map_x = 0;
-		map_y += 79;
+		map_y += BLOCK;
 	}
 }
 
@@ -58,7 +58,7 @@ void	init_cube(t_cube *game)
 {
 	mlx_window_create_info info = {0};
 
-	info.title = "Cube3D";
+	info.title = "Cub3D";
 	info.height = HEIGHT;
 	info.width = WIDTH;
 
@@ -87,8 +87,6 @@ int	main()
 	t_cube game;
 
 	init_cube(&game);
-
-	//draw_square(WIDTH/2 - 5, HEIGHT/2 - 5, 11, 0xFF00FFFF, &game);
 
 	mlx_on_event(game.mlx, game.window, MLX_KEYDOWN, key_hook, (void *)game.mlx);
 	mlx_on_event(game.mlx, game.window, MLX_WINDOW_EVENT, window_hook, (void *)&game);

@@ -1,10 +1,14 @@
 #include "../Includes/cube.h"
 
-// void touch_border(t_cube *game)
-// {
-// 	int i = 0;
-// 	int j = 0;
+bool touch(float px, float py, t_cube *game)
+{
+	int x = px/BLOCK;
+	int y = py/BLOCK;
 
-// 	if (mlx_get_image_pixel(game->mlx, game->image, i, j) ==  (mlx_color){.rgba = 0x00FFFFFF})
-// 		return ;
-// }
+	if (x >= WIDTH/BLOCK || y >= HEIGHT/BLOCK || x < 0 || y < 0)
+		return (true);
+	if (game->map[y][x] == '1')
+		return (true);
+	else
+		return (false);
+}

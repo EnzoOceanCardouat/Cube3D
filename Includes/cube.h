@@ -9,6 +9,9 @@
 
 # define WIDTH 1280
 # define HEIGHT 720
+# define BLOCK 80
+
+# define DEBUG 0 // Switch 2D == 1 and 3D == 0
 
 # define W 26
 # define A 4
@@ -56,8 +59,10 @@ void	key_release(int key, void *_player);
 void	draw_square(int x, int y,int size, uint32_t color, t_cube *game);
 
 void	init_player(t_player *player);
-void	move_player(t_player *player);
+void	move_player(t_player *player, t_cube game);
 void	loop_draw_player(void *_game);
 void	draw_map(t_cube *game);
+
+bool touch(float px, float py, t_cube *game);
 
 #endif
