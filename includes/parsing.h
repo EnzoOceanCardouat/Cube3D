@@ -1,14 +1,16 @@
 #ifndef PARSING_H
 #define PARSING_H
 
-#include "cube.h"
-#include "Libft/libft.h"
+#include "MacroLibX/includes/mlx.h"
+#include <fcntl.h>
+#include "libft/libft.h"
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif
 
 char	*get_next_line(int fd);
+int		parsing(int fd);
 
 typedef struct	s_info_data
 {

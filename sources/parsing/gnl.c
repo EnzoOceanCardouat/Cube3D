@@ -6,12 +6,12 @@
 /*   By: mcrenn <mcrenn@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/22 13:26:56 by mcrenn            #+#    #+#             */
-/*   Updated: 2026/10/22 13:36:15 by mcrenn           ###   ########.fr       */
+/*   Updated: 2026/10/27 10:38:44 by mcrenn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../Includes/parsing.h"
-#include "../../Includes/Libft/libft.h"
+#include "../../includes/parsing.h"
+#include "../../includes/libft/libft.h"
 
 static char	*storer(char *buffer, int fd)
 {

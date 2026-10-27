@@ -1,7 +1,7 @@
 #ifndef CUBE_H
 #define CUBE_H
 
-#include "../MacroLibX/includes/mlx.h"
+#include "MacroLibX/includes/mlx.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
