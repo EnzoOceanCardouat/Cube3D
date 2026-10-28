@@ -1,4 +1,4 @@
-#include "../Includes/cube.h"
+#include "../includes/cube.h"
 
 bool touch(float px, float py, t_cube *game)
 {

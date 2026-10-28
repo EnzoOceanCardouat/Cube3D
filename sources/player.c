@@ -1,10 +1,39 @@
-#include "../Includes/cube.h"
+#include "../includes/cube.h"
 
-void	init_player(t_player *player)
+void init_pos_player(t_player *player, t_cube *game)
 {
-	player->x = WIDTH / 2;
-	player->y = HEIGHT / 2;
-	player->angle = PI / 2;
+	int i;
+	int j;
+
+	i = 0;
+	while (game->map[i])
+	{
+		j = 0;
+		while (game->map[i][j])
+		{
+			if (game->map[i][j] == 'N' || game->map[i][j] == 'S' || game->map[i][j] == 'E' || game->map[i][j] == 'W')
+			{
+				player->x = ((j * BLOCK) + BLOCK) - BLOCK/2;
+				player->y = ((i * BLOCK) + BLOCK) - BLOCK/2;
+				player->spawn_direction = game->map[i][j];
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+void	init_player(t_player *player, t_cube *game)
+{
+	init_pos_player(player, game);
+	if (player->spawn_direction == 'N')
+		player->angle = (3 * M_PI / 2);
+	else if (player->spawn_direction == 'S')
+		player->angle = (M_PI / 2);
+	else if (player->spawn_direction == 'W')
+		player->angle = M_PI;
+	else if (player->spawn_direction == 'E')
+		player->angle = 0;
 
 	player->w = false;
 	player->s = false;
@@ -12,6 +41,7 @@ void	init_player(t_player *player)
 	player->d = false;
 	player->left = false;
 	player->right = false;
+	player->spawn = false;
 }
 
 void	move_player(t_player *player, t_cube game)
@@ -27,10 +57,10 @@ void	move_player(t_player *player, t_cube game)
 		player->angle -= angle_speed;
 	if (player->right)
 		player->angle += angle_speed;
-	if (player->angle > 2 * PI)
-		player->angle -= 2 * PI;
+	if (player->angle > 2 * M_PI)
+		player->angle -= 2 * M_PI;
 	else if (player->angle < 0)
-		player->angle += 2 * PI;
+		player->angle += 2 * M_PI;
 
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);
@@ -108,36 +138,57 @@ void draw_line(t_player *player, t_cube *game, float start_x, int i)
 
 	if (DEBUG == 1)
 		return;
+
 	float dist = fix_distance(ray_x, player->x, ray_y, player->y, game);
 	float height = (BLOCK / dist) * (WIDTH / 2);
-	int start_y = (HEIGHT - height) / 2;
-	int end = start_y + height;
+	float top = (HEIGHT - height) / 2;
 
-	while (start_y < end)
+	float wall_x;
+	int   t = get_tex_info(ray_x, ray_y, cos_angle, sin_angle, &wall_x);
+
+	int tex_x = (int)(wall_x / BLOCK * game->texture_width);
+	if (tex_x >= game->texture_width)
+		tex_x = game->texture_width - 1;
+
+	int y = (top < 0) ? 0 : (int)top;
+	int end = (top + height > HEIGHT) ? HEIGHT : (int)(top + height);
+
+	while (y < end)
 	{
-		mlx_pixel_put(game->mlx, game->window, i, start_y, (mlx_color){.rgba = 0x00FFFFFF});
-		start_y++;
+		int tex_y = (int)((y - top) * game->texture_height / height);
+		if (tex_y >= game->texture_height)
+			tex_y = game->texture_height - 1;
+		mlx_color color = mlx_get_image_pixel(game->mlx, game->texture[t], tex_x, tex_y);
+		mlx_pixel_put(game->mlx, game->window, i, y, color);
+		y++;
 	}
+	// float dist = fix_distance(ray_x, player->x, ray_y, player->y, game);
+	// float height = (BLOCK / dist) * (WIDTH / 2);
+	// int start_y = (HEIGHT - height) / 2;
+	// int end = start_y + height;
+
+	// while (start_y < end)
+	// {
+	// 	mlx_pixel_put(game->mlx, game->window, i, start_y, (mlx_color){.rgba = 0xFF00FFFF});
+	// 	start_y++;
+	// }
 }
 
 void	loop_draw_player(void *_game)
 {
-	t_player *player;
-
-	player = &((t_cube *)_game)->player;
-	move_player(player, *(t_cube *)_game);
+	move_player(&((t_cube *)_game)->player, *(t_cube *)_game);
 	mlx_clear_window(((t_cube *)_game)->mlx, ((t_cube *)_game)->window, (mlx_color){.rgba = 0x00000000});
 	if (DEBUG == 1)
 	{
 		draw_map((t_cube *)_game);
-		draw_square(player->x, player->y, 5, 0xFF00FFFF, (t_cube *)_game);
+		draw_square(((t_cube *)_game)->player.x, ((t_cube *)_game)->player.y, 5, 0xFF00FFFF, (t_cube *)_game);
 	}
-	float fraction = PI / 3 / WIDTH;
-	float start_x = player->angle - PI /6;
+	float fraction = M_PI / 3 / WIDTH;
+	float start_x = ((t_cube *)_game)->player.angle - M_PI / 6;
 	int i =0;
 	while (i < WIDTH)
 	{
-		draw_line(player, (t_cube *)_game, start_x, i);
+		draw_line(&((t_cube *)_game)->player, (t_cube *)_game, start_x, i);
 		start_x += fraction;
 		i++;
 	}

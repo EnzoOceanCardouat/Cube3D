@@ -1,4 +1,4 @@
-#include "../Includes/cube.h"
+#include "../includes/cube.h"
 
 void	free_mlx(t_cube *game)
 {
@@ -25,7 +25,7 @@ char **init_map(void)
 	map[3] = "1000010011000101";
 	map[4] = "1001110000010001";
 	map[5] = "1000000000111111";
-	map[6] = "1000000000000001";
+	map[6] = "100000N000000001";
 	map[7] = "1000000000000001";
 	map[8] = "1111111111111111";
 	map[9] = NULL;
@@ -46,11 +46,44 @@ void	draw_map(t_cube *game)
 				draw_square(map_x, map_y, BLOCK, 0x00FFFFFF, game);
 				map_x += BLOCK;
 			}
+			else if (game->player.spawn == false && (game->map[i][j] == 'N' || game->map[i][j] == 'S' || game->map[i][j] == 'E' || game->map[i][j] == 'W'))
+			{
+				game->player.x = ((j * BLOCK) + BLOCK) - BLOCK/2;
+				game->player.y = ((i * BLOCK) + BLOCK) - BLOCK/2;
+				game->player.spawn_direction = game->map[i][j];
+				map_x += BLOCK;
+				game->player.spawn = true;
+			}
 			else
 				map_x += BLOCK;
 		}
 		map_x = 0;
 		map_y += BLOCK;
+	}
+}
+
+void	load_texture(t_cube *game)
+{
+	char *path[4];
+	int i;
+
+	path[0] = "sources/NO.png";
+	path[1] = "sources/SO.png";
+	path[2] = "sources/EA.png";
+	path[3] = "sources/WE.png";
+	i = 0;
+
+	while (i < 4)
+	{
+		game->texture[i] = mlx_new_image_from_file(game->mlx, path[i], &game->texture_width, &game->texture_height);
+		if (!game->texture[i])
+		{
+			while (--i >= 0)
+				mlx_destroy_image(game->mlx, game->texture[i]);
+			// ADD CLEAN EXIT
+			exit(1);
+		}
+		i++;
 	}
 }
 
@@ -71,15 +104,16 @@ void	init_cube(t_cube *game)
 		free_mlx(game->mlx);
 		exit(1);
 	}
-	game->image = mlx_new_image(game->mlx, WIDTH, HEIGHT);
+	game->image = mlx_new_image(game->mlx, (int)WIDTH, (int)HEIGHT);
 	if (!game->image)
 	{
 		free_mlx(game->mlx);
 		exit(1);
 	}
 	mlx_put_image_to_window(game->mlx, game->window, game->image, 0, 0);
-	init_player(&game->player);
 	game->map = init_map();
+	load_texture(game);
+	init_player(&game->player, game);
 }
 
 int	main()

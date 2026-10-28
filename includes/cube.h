@@ -1,7 +1,7 @@
 #ifndef CUBE_H
 #define CUBE_H
 
-#include "../MacroLibX/includes/mlx.h"
+#include "../includes/MacroLibX/includes/mlx.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -20,13 +20,15 @@
 # define LEFT 80
 # define RIGHT 79
 
-# define PI 3.14159265359
+# define IMG_WIDTH 80
+# define IMG_HEIGHT 80
 
 typedef struct s_player
 {
 	float x;
 	float y;
 	float angle;
+	char spawn_direction;
 
 	bool w;
 	bool s;
@@ -34,6 +36,7 @@ typedef struct s_player
 	bool d;
 	bool left;
 	bool right;
+	bool spawn;
 }	t_player;
 
 typedef struct s_cube
@@ -49,6 +52,11 @@ typedef struct s_cube
 
 	t_player player;
 	char **map;
+
+	mlx_image texture[4];
+	int texture_width;
+	int texture_height;
+
 }	t_cube;
 
 void	window_hook(int key, void *param);
@@ -56,13 +64,16 @@ void	key_hook(int key, void *param);
 void	key_press(int key, void *_player);
 void	key_release(int key, void *_player);
 
+/*utils.c*/
 void	draw_square(int x, int y,int size, uint32_t color, t_cube *game);
+int		get_tex_info(float ray_x, float ray_y, float cos_a, float sin_a, float *wall_x);
 
-void	init_player(t_player *player);
+
+void	init_player(t_player *player, t_cube *game);
 void	move_player(t_player *player, t_cube game);
 void	loop_draw_player(void *_game);
 void	draw_map(t_cube *game);
 
-bool touch(float px, float py, t_cube *game);
+bool	touch(float px, float py, t_cube *game);
 
 #endif

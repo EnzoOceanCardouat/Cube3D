@@ -1,4 +1,4 @@
-#include "../Includes/cube.h"
+#include "../includes/cube.h"
 
 void	key_hook(int key, void *param)
 {
