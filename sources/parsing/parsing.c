@@ -6,14 +6,13 @@
 /*   By: mcrenn <mcrenn@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/22 13:05:46 by mcrenn            #+#    #+#             */
-/*   Updated: 2026/10/26 17:32:10 by mcrenn           ###   ########.fr       */
+/*   Updated: 2026/10/27 11:15:19 by mcrenn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include "../../Includes/parsing.h"
+#include "../../includes/parsing.h"
 
-int main()
+int parsing(int fd)
 {
 	char		*str;
 	t_info_data	*data;
@@ -21,7 +20,7 @@ int main()
 	char		**ceiling;
 
 	int fd = open("test.txt", O_RDONLY);
-	data = ft_calloc(1, sizeof(t_cube));
+	data = ft_calloc(1, sizeof(t_info_data));
 
 	// protection fd
 
