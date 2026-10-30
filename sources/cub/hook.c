@@ -1,4 +1,4 @@
-#include "../includes/cube.h"
+#include "../../includes/cube.h"
 
 void	key_hook(int key, void *param)
 {
@@ -29,6 +29,13 @@ void	key_press(int key, void *_player)
 		player->left = true;
 	else if (key == RIGHT)
 		player->right = true;
+	else if (key == M)
+	{
+		if (!player->m)
+			player->m = true;
+		else
+			player->m = false;
+	}
 }
 
 void	key_release(int key, void *_player)

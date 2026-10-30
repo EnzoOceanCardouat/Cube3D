@@ -4,7 +4,7 @@ NAME = Cube
 
 OBJ_DIR = obj
 
-MACROLIBXDIR:= MacroLibX/
+MACROLIBXDIR:= libs/MacroLibX/
 MACROLIBX:=$(addprefix $(MACROLIBXDIR), libmlx.so)
 
 INCLUDES=  -I$(MACROLIBX)
